@@ -75,7 +75,7 @@ export function App() {
       // Lets force incorrect prediction here
       let val = parseInt($('#target')[0].value);
       let targetLabel = tf.oneHot(3, 10).reshape([1, 10]);
-      if (val) {
+      if (!isNaN(val)) {
         targetLabel = tf.oneHot(val, 10).reshape([1, 10]);
       } else {
         $('#target')[0].value = 3;
