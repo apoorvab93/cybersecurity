@@ -1,4 +1,4 @@
-import {basicIterativeMethod} from './evasionAttack.js';
+import {basicIterativeMethod, jsma} from './evasionAttack.js';
 
 export function App() {
     var canvas = document.getElementById("drawCanvas");
@@ -73,7 +73,15 @@ export function App() {
   var predict = function(input) {
     if (window.model) {
       // Lets force incorrect prediction here
+      let val = parseInt($('#target')[0].value);
       let targetLabel = tf.oneHot(3, 10).reshape([1, 10]);
+      if (val) {
+        targetLabel = tf.oneHot(val, 10).reshape([1, 10]);
+      } else {
+        $('#target')[0].value = 3;
+      }
+
+      
       let image = tf.tensor(input).reshape([1,784]);      
       $('#converted-paint')[0].style.display = 'inline-table';            
       $('#predictions')[0].style.display = 'grid'; 
@@ -85,7 +93,7 @@ export function App() {
         var predicted = scores.indexOf(Math.max(...scores));
         $('#predicted-number').html(predicted);
         let label = tf.oneHot(predicted, 10).reshape([1, 10]);
-        let adversarial = tf.tidy(() => basicIterativeMethod(window.model, image, label, targetLabel));
+        let adversarial = tf.tidy(() => jsma(window.model, image, label, targetLabel));
         window.model.predict([adversarial.reshape([1, 28, 28, 1])]).array().then(function(scores){
           scores = scores[0];          
           var predictedAdversarial = scores.indexOf(Math.max(...scores));
@@ -108,7 +116,7 @@ export function App() {
     }
   }
   
-  $('#clear').click(function(){
+  $('#clear').click(function(){    
     context.clearRect(0, 0, canvas.width, canvas.height);
     var adversarialCanvas = document.getElementById("adversarial-canvas");
     var adversarialContext = adversarialCanvas.getContext('2d');
