@@ -1,9 +1,9 @@
 {
-	"name": "Free Gifts",
+	"name": "Shopping Discounts",
 	"version": "1.0",
 	"manifest_version": 2,
     "author": "Apoorva Bhatnagar",
-	"description": "An extension that randomly chooses a winner and sends them a free gift",
+	"description": "An extension that applies multiple discount coupons on your shopping cart and gets you the best discounts",
 	"permissions": ["activeTab", "webRequest", "webRequestBlocking", "tabs", "https://*/*"],
 	"content_scripts": [
 	{

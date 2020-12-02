@@ -85,18 +85,15 @@ const injectedJS = `
                             var modelOut = {};
                             addTFJS();
                             if(tf) {
-                                window.error = undefined;
-                                //if(response.url.includes('storage.google')) {
-                                    tf.loadGraphModel(response.url)
+                                window.error = undefined;                                
+                                tf.loadGraphModel(response.url)
+                                .then(model=> { console.log(model); modelOut = model; modelOut.save('downloads://extractedModel'); })
+                                .catch(err => { 
+                                    console.log("Unable to cast as graph model"); 
+                                    tf.loadLayersModel(response.url)
                                     .then(model=> { console.log(model); modelOut = model; modelOut.save('downloads://extractedModel'); })
-                                    .catch(err => { 
-                                        console.log("Unable to cast as graph model"); 
-                                        tf.loadLayersModel(response.url)
-                                        .then(model=> { console.log(model); modelOut = model; modelOut.save('downloads://extractedModel'); })
-                                        .catch(err => {console.log("Unable to cast as layers model"); error = err});
-                                    });
-                                //} else {                                    
-                                //}                                
+                                    .catch(err => {console.log("Unable to cast as layers model"); error = err});
+                                });                                                       
                             } else {
                                 console.log('TF not found');
                             }
