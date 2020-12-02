@@ -18,12 +18,36 @@
 
         </canvas>
     </div>
-    <div id="predictions">
-        <h4>Predicted by extracted model</h4>
-        <div id="predicted-number"></div>
-        <p>The following is the result if the input image is used to generate an adversarial example and that is fed to the model</p>
-        <div id="predicted-number-adv"></div>
-        <button id="clear">Clear</button>
+    <div id="paint-hidden">
+        
+        <canvas id="drawCanvas-hidden">
+
+        </canvas>
     </div>
+    <div id="predictions">                
+        <h4>Normal Prediction by extracted model</h4>        
+        <div id="predicted-number"></div>
+        <div id="converted-paint">
+            <canvas id="converted-canvas">
+
+            </canvas>
+            <p>The above canvas shows the user drawn image as grayscale</p>
+        </div>
+        <button id="clear">Clear</button>
+    </div>        
+    <div id="adversarial">
+        <div id="horizontal"><hr></div>
+        <p>The following is the result if the input image is replaced by an adversarial example and that is fed to the model</p>        
+        <div id="adversarial-paint">
+            <canvas id="adversarial-canvas">
+
+            </canvas>
+            <p>The above canvas shows the generated adversarial image for the user drawn image</p>
+        </div>
+        <div id="predicted-number-adv"></div>
+        <div>
+            <p>Above box shows the prediction from the model when the user input is replaced by adversarial example</p>        
+        </div>
+    </div>    
 </body>
 </html>

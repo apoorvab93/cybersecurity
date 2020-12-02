@@ -1,23 +1,41 @@
-export function bimTargeted(model, img, lbl, targetLbl, {ε = 0.1, α = 0.01, iters = 10, loss = 1} = {}) {
-    // Loss functions (of increasing complexity) that measure how close the image is to the target class
-    function loss0(input) {
-      return tf.metrics.categoricalCrossentropy(targetLbl, model.predict(input));  // Make input closer to target class
+// The following method is an implementation of the Basic Interative Method attack
+// Citation - @article{art2018,
+//     title = {Adversarial Robustness Toolbox v1.2.0},
+//     author = {Nicolae, Maria-Irina and Sinn, Mathieu and Tran, Minh~Ngoc and Buesser, Beat and Rawat, Ambrish and Wistuba, Martin and Zantedeschi, Valentina and Baracaldo, Nathalie and Chen, Bryant and Ludwig, Heiko and Molloy, Ian and Edwards, Ben},
+//     journal = {CoRR},
+//     volume = {1807.01069},
+//     year = {2018},
+//     url = {https://arxiv.org/pdf/1807.01069}
+// }
+// Citation 2 - adversarial js - https://github.com/kennysong/adversarial.js
+export function basicIterativeMethod(model, image, label, targetLabel) {
+    let ε = 0.1; // attack strength
+    let α = 0.01; // small perturbation
+    
+    
+    function firstLoss(input) {
+      return tf.metrics.categoricalCrossentropy(targetLabel, model.predict(input)); 
     }
-    function loss1(input) {
-      return loss0(input).sub(tf.metrics.categoricalCrossentropy(lbl, model.predict(input)));  // + Move input away from original class
+
+    function outerLoss(input) {
+      return firstLoss(input).sub(tf.metrics.categoricalCrossentropy(label, model.predict(input))); 
     }
-    let lossFn = [loss0, loss1][loss];
+
+    let lossFunction = [firstLoss, outerLoss][1];
   
-    // Random initialization for the PGD (for even better performance, we should try multiple inits)
-    let aimg = img.add(tf.randomUniform(img.shape, -ε, ε)).clipByValue(0, 1);
+    // Random initialization for PGD(projected gradient descent)
+    let adversarialImage = image.add(tf.randomUniform(image.shape, -ε, ε)).clipByValue(0, 1);
   
-    // Run PGD to MINIMIZE the loss w.r.t. aimg
-    let grad = tf.grad(lossFn);
-    for (let i = 0; i < iters; i++) {
-      let delta = tf.sign(grad(aimg.reshape([1,28,28,1])).reshape([1,784])).mul(α);
-      aimg = aimg.sub(delta);
-      aimg = tf.minimum(1, tf.minimum(img.add(ε), tf.maximum(0, tf.maximum(img.sub(ε), aimg))));  // Clips aimg to ε distance of img
+    // Minimize PGD
+    let grad = tf.grad(lossFunction);
+    // Run it for just 20 iterations to see results
+    for (let i = 0; i < 20; i++) {
+      // we need to reshape the image based on the model's expectations
+      // In this case, the model being attacked expects a 4D tensor of the following shape
+      let delta = tf.sign(grad(adversarialImage.reshape([1,28,28,1])).reshape([1,784])).mul(α);
+      adversarialImage = adversarialImage.sub(delta);
+      adversarialImage = tf.minimum(1, tf.minimum(image.add(ε), tf.maximum(0, tf.maximum(image.sub(ε), adversarialImage))));  
     }
   
-    return aimg;
+    return adversarialImage;
   }

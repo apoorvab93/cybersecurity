@@ -14,6 +14,58 @@ div {
     height: 300px;
 }
 
+#paint-hidden {
+    width: 40px;
+    height: 40px;
+    border: 3px solid pink;
+    margin: auto;
+    display: none;
+}
+
+#drawCanvas-hidden {
+    width: 40px;
+    height: 40px;
+}
+
+#adversarial-paint {
+    width: 300px;
+    height: 300px;
+    border: 3px solid pink;
+    margin: auto;
+    display: none;
+}
+
+#converted-paint {
+    width: 300px;
+    height: 300px;
+    border: 3px solid pink;
+    margin: auto;
+    display: none;
+}
+
+#adversarial {
+    display: none;
+    justify-content: center;
+}
+
+#horizontal {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+
+}
+
+#converted-canvas {
+    width: 300px;
+    height: 300px;
+}
+
+#adversarial-canvas {
+    width: 300px;
+    height: 300px;
+}
+
+
 #predicted-number {
     width: 150px;
     font-size: 120px;
@@ -21,6 +73,7 @@ div {
     border: 3px solid rgb(0, 0, 0);
     margin: auto;
     margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
     vertical-align: middle;
 }
@@ -32,6 +85,7 @@ div {
     border: 3px solid rgb(0, 0, 0);
     margin: auto;
     margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
     vertical-align: middle;
 }
@@ -40,6 +94,8 @@ div {
     margin-top: 60px;
     margin-bottom: 60px;
     text-align: center;
+    display: none;
+    align-content: center;
 }
 
 button {    

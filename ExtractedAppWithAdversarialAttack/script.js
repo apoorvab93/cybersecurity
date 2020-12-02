@@ -1,4 +1,4 @@
-import {bimTargeted} from './evasionAttack.js';
+import {basicIterativeMethod} from './evasionAttack.js';
 
 export function App() {
     var canvas = document.getElementById("drawCanvas");
@@ -31,8 +31,10 @@ export function App() {
     canvas.removeEventListener('mousemove', onPaint, false);
     var img = new Image();
     img.onload = function() {
-      window.context.drawImage(img, 0, 0, 28, 28);
-      var data = window.context.getImageData(0, 0, 28, 28).data;
+      var hiddencanvas = document.getElementById("drawCanvas-hidden");
+      var hiddencontext = hiddencanvas.getContext('2d');
+      hiddencontext.drawImage(img, 0, 0, 28, 28);
+      var data = hiddencontext.getImageData(0, 0, 28, 28).data;
       var input = [];
       for(var i = 0; i < data.length; i += 4) {
         input.push(data[i + 2] / 255);
@@ -73,22 +75,30 @@ export function App() {
       // Lets force incorrect prediction here
       let targetLabel = tf.oneHot(3, 10).reshape([1, 10]);
       let image = tf.tensor(input).reshape([1,784]);      
+      $('#converted-paint')[0].style.display = 'inline-table';            
+      $('#predictions')[0].style.display = 'grid'; 
+      var convertedCanvas = document.getElementById("converted-canvas");                      
+      tf.browser.toPixels(tf.tensor(input).reshape([28,28]), convertedCanvas);
 
       window.model.predict([tf.tensor(input).reshape([1, 28, 28, 1])]).array().then(function(scores){
         scores = scores[0];
         var predicted = scores.indexOf(Math.max(...scores));
         $('#predicted-number').html(predicted);
         let label = tf.oneHot(predicted, 10).reshape([1, 10]);
-        let adversarial = tf.tidy(() => bimTargeted(window.model, image, label, targetLabel, undefined));
+        let adversarial = tf.tidy(() => basicIterativeMethod(window.model, image, label, targetLabel));
         window.model.predict([adversarial.reshape([1, 28, 28, 1])]).array().then(function(scores){
-          scores = scores[0];
+          scores = scores[0];          
           var predictedAdversarial = scores.indexOf(Math.max(...scores));
-          if(predictedAdversarial !== predicted) {
-            $('#predicted-number-adv').html(predictedAdversarial);
+          $('#adversarial-paint')[0].style.display = 'inline-table';            
+          $('#adversarial')[0].style.display = 'grid';            
+          var adversarialCanvas = document.getElementById("adversarial-canvas");                      
+          tf.browser.toPixels(adversarial.reshape([28,28]), adversarialCanvas);
+          if(predictedAdversarial !== predicted) {            
+            var text = '<div style="display:flex;"><p style="font-size:15px;">Success!:</p>'+ predictedAdversarial+'</div>';
+            $('#predicted-number-adv').html(text);            
           }else {
-            $('#predicted-number-adv').html('<p style="font-size:15px;">Model did not fail to adversarial input</p>');
-          }
-          
+            $('#predicted-number-adv').html('<p style="font-size:15px;">The adversarial image did not fool the model, Try again</p>');
+          }          
         });
       });
       
@@ -100,8 +110,16 @@ export function App() {
   
   $('#clear').click(function(){
     context.clearRect(0, 0, canvas.width, canvas.height);
+    var adversarialCanvas = document.getElementById("adversarial-canvas");
+    var adversarialContext = adversarialCanvas.getContext('2d');
+    adversarialContext.clearRect(0, 0, adversarialCanvas.width, adversarialCanvas.height);
+    var hiddenCanvas = document.getElementById("drawCanvas-hidden");
+    var hiddenContext = hiddenCanvas.getContext('2d');
+    hiddenContext.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
     $('#predicted-number').html('');
     $('#predicted-number-adv').html('');
+    $('#adversarial')[0].style.display = 'none';       
+    $('#predictions')[0].style.display = 'none';
   });
 
 }
