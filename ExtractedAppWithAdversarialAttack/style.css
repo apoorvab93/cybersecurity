@@ -1,0 +1,50 @@
+div {
+    display: block;    
+}
+
+#paint {
+    width: 300px;
+    height: 300px;
+    border: 3px solid pink;
+    margin: auto;
+}
+
+#drawCanvas {
+    width: 300px;
+    height: 300px;
+}
+
+#predicted-number {
+    width: 150px;
+    font-size: 120px;
+    height: 150px;
+    border: 3px solid rgb(0, 0, 0);
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#predicted-number-adv {
+    width: 150px;
+    font-size: 120px;
+    height: 150px;
+    border: 3px solid rgb(0, 0, 0);
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#predictions {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+button {    
+    margin: auto;
+    margin-top: 70px;
+    padding: 30px;
+    text-align: center;
+}

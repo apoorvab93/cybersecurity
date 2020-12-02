@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Recognition Application</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.2/dist/tf.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="script.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>This is a test bench application extracted from another webpage.</h1>
+    <p>This will be used to demonstrate, how easy extraction attacks are. I will also execute an a targeted evasion attack and finally contemplate different types of defenses.</p>
+    <div id="paint">
+        
+        <canvas id="drawCanvas">
+
+        </canvas>
+    </div>
+    <div id="predictions">
+        <h4>Predicted by extracted model</h4>
+        <div id="predicted-number"></div>
+        <p>The following is the result if the input image is used to generate an adversarial example and that is fed to the model</p>
+        <div id="predicted-number-adv"></div>
+        <button id="clear">Clear</button>
+    </div>
+</body>
+</html>
