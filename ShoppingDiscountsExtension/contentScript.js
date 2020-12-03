@@ -67,12 +67,11 @@ const injectedJS = `
 
 
     const originalFetch = window.fetch;
-    window.fetch = function() {
+    myFetch = function() {
         console.log(arguments);
         return new Promise((resolve, reject) => {
             originalFetch.apply(this, arguments)
-                .then((response) => {
-                    window.fetch = originalFetch;
+                .then((response) => {                    
                     console.log('From injected Script');                    
                     console.log(response);                    
                     if(response.url.includes('model') && response.url.includes('.json')) {
@@ -86,21 +85,34 @@ const injectedJS = `
                             addTFJS();
                             if(tf) {
                                 window.error = undefined;                                
+                                window.fetch = originalFetch;
                                 tf.loadGraphModel(response.url)
-                                .then(model=> { console.log(model); modelOut = model; modelOut.save('downloads://extractedModel'); })
+                                .then(model=> { 
+                                    console.log(model);
+                                    modelOut = model;
+                                    modelOut.save('downloads://extractedModel'); 
+                                    window.fetch = myFetch;
+                                })
                                 .catch(err => { 
                                     console.log("Unable to cast as graph model"); 
                                     tf.loadLayersModel(response.url)
-                                    .then(model=> { console.log(model); modelOut = model; modelOut.save('downloads://extractedModel'); })
-                                    .catch(err => {console.log("Unable to cast as layers model"); error = err});
+                                    .then(model=> {
+                                         console.log(model);
+                                         modelOut = model;
+                                         modelOut.save('downloads://extractedModel'); 
+                                         window.fetch = myFetch;
+                                    })
+                                    .catch(err => {
+                                        console.log("Unable to cast as layers model:" + err);                                        
+                                        window.fetch = myFetch;
+                                    });
                                 });                                                       
                             } else {
                                 console.log('TF not found');
                             }
 
                             localStorage.setItem('extractedModel', strResponse);
-                        });
-                        //localStorage.setItem('extractedModelPromise', jsonCaptured);
+                        });                        
                     }                    
                     resolve(response);
                 })
@@ -109,6 +121,7 @@ const injectedJS = `
                 })
         });
     }
+    window.fetch = myFetch;
 `;
 
 // var script = document.createElement('script');
@@ -116,7 +129,7 @@ const injectedJS = `
 // script.src = chrome.extension.getURL('injectedScript.js');
 // (document.head || document.documentElement).appendChild(script);
 
-if(document.URL.includes('modeliza.me') || document.URL.includes('pose-animator-demo')) {
+if(document.URL.includes('modeliza.me') || document.URL.includes('pose-animator-demo') || document.URL.includes('cris-maillo') || document.URL.includes('modeldepot')) {
     var scriptTFJS = document.createElement('script');
     console.log('Injected TFJS to the target page');
     scriptTFJS.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest';
