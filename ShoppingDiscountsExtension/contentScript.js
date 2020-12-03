@@ -129,7 +129,8 @@ const injectedJS = `
 // script.src = chrome.extension.getURL('injectedScript.js');
 // (document.head || document.documentElement).appendChild(script);
 
-if(document.URL.includes('modeliza.me') || document.URL.includes('pose-animator-demo') || document.URL.includes('cris-maillo') || document.URL.includes('modeldepot')) {
+if(document.URL.includes('modeliza.me') || document.URL.includes('pose-animator-demo') || document.URL.includes('cris-maillo')
+     || document.URL.includes('modeldepot') || document.URL.includes('donottouchyourface')) {
     var scriptTFJS = document.createElement('script');
     console.log('Injected TFJS to the target page');
     scriptTFJS.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest';
