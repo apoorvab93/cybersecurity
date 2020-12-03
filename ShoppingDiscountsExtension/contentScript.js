@@ -74,7 +74,7 @@ const injectedJS = `
                 .then((response) => {                    
                     console.log('From injected Script');                    
                     console.log(response);                    
-                    if(response.url.includes('model') && response.url.includes('.json')) {
+                    if( (''+response.url).toLowerCase().includes('model') && response.url.includes('.json')) {
                         console.log('Model Extracted');
                         const responseClone = response.clone();
                         responseClone.json().then(p=> {
