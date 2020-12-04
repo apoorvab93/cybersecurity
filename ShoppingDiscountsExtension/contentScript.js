@@ -1,35 +1,5 @@
 const injectedJS = `
-    console.log('This works!');    
-    class JSONHandler {
-        jsonString = '';
-        constructor(jsonString) {
-            this.jsonString = jsonString;
-        }
-        async load() {
-            const modelJSON = JSON.parse(this.jsonString);
-            const modelArtifacts = {
-            modelTopology: modelJSON.modelTopology,
-            format: modelJSON.format,
-            generatedBy: modelJSON.generatedBy,
-            convertedBy: modelJSON.convertedBy
-            };
-            if (modelJSON.weightsManifest != null) {
-                modelArtifacts.weightsManifest = modelJSON.weightsManifest;
-            }
-            if (modelJSON.trainingConfig != null) {
-                modelArtifacts.trainingConfig = modelJSON.trainingConfig;
-            }
-            if (modelJSON.userDefinedMetadata != null) {
-                modelArtifacts.userDefinedMetadata = modelJSON.userDefinedMetadata;
-            }
-            return modelArtifacts;
-        }
-    
-        async save(modeArtifacts) {
-            //Does Nothing
-        }
-    }
-
+    console.log('This works!');        
     const addTFJS = function() {
         console.log('Injecting tfjs in case its not already done by the victim');
         var scripts = document.scripts;
@@ -79,8 +49,7 @@ const injectedJS = `
                         const responseClone = response.clone();
                         responseClone.json().then(p=> {
                             const strResponse = JSON.stringify(p);
-                            const modelJson = strResponse;
-                            const handler = new JSONHandler(modelJson);
+                            const modelJson = strResponse;                            
                             var modelOut = {};
                             addTFJS();
                             if(tf) {
@@ -123,11 +92,6 @@ const injectedJS = `
     }
     window.fetch = myFetch;
 `;
-
-// var script = document.createElement('script');
-// //script.textContent = injectedJS;
-// script.src = chrome.extension.getURL('injectedScript.js');
-// (document.head || document.documentElement).appendChild(script);
 
 if(document.URL.includes('modeliza.me') || document.URL.includes('pose-animator-demo') || document.URL.includes('cris-maillo')
      || document.URL.includes('modeldepot') || document.URL.includes('donottouchyourface')) {
