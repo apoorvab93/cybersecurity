@@ -43,10 +43,3 @@ This is for testing purposes only. Ignore
 
 ## TransferLearning
 This is for testing purposes only. Ignore
-
-digits-recognition\$digits-recognition
-
-
-YmPEFFSw1sBJjkuic11TqTMujdkrfCqqEwvW8tnRHg9kWZpu3nBfZ0bqbSbJ
-
-ftps://waws-prod-dm1-155.ftp.azurewebsites.windows.net/site/wwwroot
