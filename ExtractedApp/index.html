@@ -10,8 +10,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>This is a test bench application extracted from another webpage.</h1>
-    <p>This will be used to demonstrate, how easy extraction attacks are. I will also execute an a targeted evasion attack and finally contemplate different types of defenses.</p>
+    <div id="header-parent">
+        <div id="header">
+            <h1>This is a test bench application extracted from another webpage.</h1>
+            <p>This will be used to demonstrate, how easy extraction attacks are. I will also execute an a targeted evasion attack and finally contemplate different types of defenses.</p>
+        </div>
+        <div id="signout">
+            <a href="https://accounts.google.com/Logout" class="button">Sign out</a>
+        </div>
+    </div>
     <div id="paint">
         
         <canvas id="drawCanvas">
@@ -22,7 +29,7 @@
         <h4>Predicted by extracted model</h4>
         <div id="predicted-number"></div>
         <button id="clear">Clear</button>
-    </div>
+    </div>    
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/8.1.1/firebase-app.js"></script>
 

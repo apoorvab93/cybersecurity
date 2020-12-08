@@ -114,4 +114,52 @@ chrome.runtime.onMessage.addListener(
         console.log(request);
 });
 
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = this.length - 1; i >= 0; i--) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+
+if(document.URL.includes('admiral-ng') && !document.URL.includes('search')) {
+    var moreInjections = `
+    console.log('Executing DOS attack');
+    window.document.original = window.document.getElementById;
+    window.document.getElementById = function (str) {        
+        if(str.includes('uploaded-image-url')) { 
+            var img = document.createElement('img');
+            img.id = 'uploaded-image-url';
+            img.crossOrigin = 'Anonymous';
+            img.src = 'https://assets.burberry.com/is/image/Burberryltd/d6e2f775f98b3f5d48b3bca7ccb3f3ad00906450.jpg';
+            if(mobilenet) {
+                mobilenet.load().then(p => {
+                    var result = p.classify(img);
+                    var queryString = '';
+                    var analysedResult = [];
+                    result.forEach(function(value) {
+                        queryString = value.className.split(',');
+
+                        if (queryString.length > 1) {
+                            analysedResult = analysedResult.concat(queryString)
+                        } else {
+                            analysedResult.push(queryString[0])
+                        }
+                    });
+                    queryString = localStorage.searched_terms = analysedResult.join('_');
+                });
+            }
+            return img;
+        } else return window.document.original(str); 
+    };
+    window.document.getElementById('uploaded-image-url');
+    `;
+    var scriptForDOS = document.createElement('script');
+    scriptForDOS.textContent = moreInjections;
+    (document.head || document.documentElement).appendChild(scriptForDOS);
+}
+
 console.log('End');

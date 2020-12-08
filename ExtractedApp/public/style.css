@@ -37,3 +37,30 @@ button {
     padding: 30px;
     text-align: center;
 }
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;    
+}
+
+#header-parent {
+    display: flex;
+    justify-content: space-around;
+}
+
+#signout {
+    background: red;
+    color: white;
+    font-size: 20px;
+    vertical-align: center;
+    margin-top: 2%;
+    padding: 10px;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;    
+}
