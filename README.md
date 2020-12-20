@@ -1,5 +1,5 @@
 # Cybersecurity in Emerging Environments
-This repository holds the work in progress towards the final project of course "Cybersecurity in Emerging Environments"
+This repository holds the work for the topic- Security Analysis of ML models made with tensorflow.js
 
 # Folder Structure
 
